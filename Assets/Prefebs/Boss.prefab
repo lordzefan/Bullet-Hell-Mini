@@ -4957,19 +4957,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c5aa99a25eaf3428798a7480fc59fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 20
   collionDamage: 1
   moveSpeed: 3
-  projectileKind: BossProjectile
-  phase1Health: 10
-  phase2Health: 15
-  phase1FireRate: {fileID: 11400000, guid: 371f9b2aaf0e85a47a75f4f30bed798c, type: 2}
-  phase1Cooldown: 5
+  projectileType: BossProjectile
+  plusHealth: 10
+  phase1Projectile: {fileID: 11400000, guid: 371f9b2aaf0e85a47a75f4f30bed798c, type: 2}
+  phase2Projectile: {fileID: 11400000, guid: 252a6d67a2c89b944bcdd28e23ae1edf, type: 2}
   moveToCenterSpeed: 5
-  bulletCount: 16
-  phase2FireRate: {fileID: 11400000, guid: 252a6d67a2c89b944bcdd28e23ae1edf, type: 2}
+  bulletCount: 10
   rotateSpeed: 90
-  projectilePoolTag: BossProjectile
+  projectileType2: BossProjectile2
 --- !u!58 &7451483095672162156
 CircleCollider2D:
   m_ObjectHideFlags: 0

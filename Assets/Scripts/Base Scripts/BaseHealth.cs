@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BaseHealth : MonoBehaviour
 {
@@ -33,6 +32,7 @@ public class BaseHealth : MonoBehaviour
         
     }
 
+    //HIT EFFECT
     IEnumerator DamageFlash()
     {
         isInvulnerable = true;

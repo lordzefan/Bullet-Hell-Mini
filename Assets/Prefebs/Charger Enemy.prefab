@@ -126,13 +126,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28029fed82ecf674d9263e186c4fd6e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2
+  maxHealth: 5
   collionDamage: 1
   moveSpeed: 3
-  projectileKind: FastProjectile
-  damageParticle: {fileID: 0}
+  projectileType: FastProjectile
   lifetime: 5
-  fireRate: 1
+  fireRate: {fileID: 11400000, guid: 22b37888f6a22ba49817292bceb80d0e, type: 2}
 --- !u!70 &447368002161568007
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

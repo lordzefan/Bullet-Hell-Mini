@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss Pool Data 2
   m_EditorClassIdentifier: 
   poolTag: BossProjectile2
-  prefab: {fileID: 1352628656257059863, guid: 4701fe3c66eb901488c18c943124fef2, type: 3}
+  prefab: {fileID: 1352628656257059863, guid: 1b351aaffbfb09645a5bab4740c3a50a, type: 3}
   amount: 50
   pool:
   - {fileID: 0}

@@ -126,11 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f60576bc69b2746be77b169d49dc4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 3
   collionDamage: 1
   moveSpeed: 3
-  projectileKind: EnemyProjectile
-  damageParticle: {fileID: 0}
+  projectileType: FastProjectile
 --- !u!58 &1068428657758469440
 CircleCollider2D:
   m_ObjectHideFlags: 0

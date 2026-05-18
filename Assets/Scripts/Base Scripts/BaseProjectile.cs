@@ -32,8 +32,7 @@ public abstract class BaseProjectile : MonoBehaviour
 
     protected virtual void MoveProjectile()
     {
-        transform.position +=
-            transform.up * projectileData.speed * Time.deltaTime;
+        transform.position += transform.up * projectileData.speed * Time.deltaTime;
     }
 
     protected void DisableProjectile()

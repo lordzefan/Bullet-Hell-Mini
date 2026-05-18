@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WaveManager : MonoBehaviour
 {
@@ -8,142 +10,226 @@ public class WaveManager : MonoBehaviour
     public GameObject shooterEnemy;
     public GameObject chargerEnemy;
     public GameObject bossEnemy;
+
+    [Header("Container")]
     public Transform enemyContainer;
 
     [Header("Spawn Points")]
     public Transform[] spawnPoints;
 
-    private int currentWave = 0;
-    private bool isTransitioning = false;
-    private bool waveInProgress = false;
-    private bool allSpawned = false; 
+    [Header("UI")]
+    public TextMeshProUGUI waveTxt;
+    public TextMeshProUGUI highScoreText;
 
-    void Start()
+    private int currentWave = 0;
+
+    private bool isTransitioning;
+    private bool waveInProgress;
+    private bool allSpawned;
+
+    private void Start()
     {
+        waveTxt.gameObject.SetActive(false);
+        GameManager.Instance.LoadHighScore();
+        highScoreText.text = "High Score : " + GameManager.Instance.highScore;
+
         StartCoroutine(StartWaveRoutine());
     }
 
-    void Update()
+    private void Update()
     {
-        // Cek hanya jika:
-        // 1. Wave sedang berjalan
-        // 2. Tidak sedang transisi
-        // 3. Semua enemy sudah di-spawn (bukan cuma belum mulai)
-        // 4. Semua enemy sudah mati
-        if (waveInProgress && !isTransitioning && allSpawned && GameManager.Instance.AllEnemiesDead())
+         
+
+        if (waveInProgress &&!isTransitioning &&allSpawned &&GameManager.Instance.AllEnemiesDead())
         {
             Debug.Log($"Wave {currentWave} cleared!");
+
             isTransitioning = true;
             waveInProgress = false;
             allSpawned = false;
+            
+            StartCoroutine(ShowWaveText());
             StartCoroutine(NextWaveRoutine());
         }
     }
 
+
+    // START GAME
+    IEnumerator StartWaveRoutine()
+    {
+        yield return new WaitForSeconds(2f);
+
+        StartWave(1);
+    }
+
+
+    // NEXT WAVE
     IEnumerator NextWaveRoutine()
     {
-        Debug.Log("Next wave in 3 seconds...");
         yield return new WaitForSeconds(3f);
 
         currentWave++;
 
         if (currentWave > 4)
         {
-            GameWin();
+            StartCoroutine(GameWin());
             yield break;
         }
 
         isTransitioning = false;
+
         StartWave(currentWave);
     }
 
-    void GameWin()
-    {
-        Debug.Log("YOU WIN ALL WAVES!");
-    }
-
-    IEnumerator StartWaveRoutine()
-    {
-        yield return new WaitForSeconds(2f);
-        StartWave(1);
-    }
-
+ 
+    // START WAVE
     void StartWave(int waveIndex)
     {
         currentWave = waveIndex;
+
         waveInProgress = true;
         allSpawned = false;
-        Debug.Log($"=== Starting Wave {waveIndex} ===");
+
 
         switch (waveIndex)
         {
-            case 1: StartCoroutine(SpawnWave1()); break;
-            case 2: StartCoroutine(SpawnWave2()); break;
-            case 3: StartCoroutine(SpawnWave3()); break;
-            case 4: StartCoroutine(SpawnBoss()); break;
+            case 1:
+                StartCoroutine(SpawnWave1());
+                break;
+
+            case 2:
+                StartCoroutine(SpawnWave2());
+                break;
+
+            case 3:
+                StartCoroutine(SpawnWave3());
+                break;
+
+            case 4:
+                StartCoroutine(SpawnBoss());
+                break;
         }
     }
 
+ 
+    // WAVE UI
+    IEnumerator ShowWaveText()
+    {
+        waveTxt.gameObject.SetActive(true);
+
+        if (currentWave == 3)
+        {
+            waveTxt.text = "BOSS WAVE";
+        }
+        else if ( currentWave < 3)
+        {
+            waveTxt.text = "WAVE " + (currentWave + 1);
+        }
+        else
+        {
+            waveTxt.text = "YOU WIN";
+        }
+        yield return new WaitForSeconds(2f);
+
+        waveTxt.gameObject.SetActive(false);
+    }
+
+
+    // SPAWN
     void SpawnEnemy(GameObject enemyPrefab)
     {
         int randomIndex = Random.Range(0, spawnPoints.Length);
+
         Transform spawnPoint = spawnPoints[randomIndex];
 
-        Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity, enemyContainer);
+        Instantiate(
+            enemyPrefab, spawnPoint.position, Quaternion.identity, enemyContainer);
 
         GameManager.Instance.RegisterEnemy();
     }
 
+    // WAVE 
     IEnumerator SpawnWave1()
     {
         for (int i = 0; i < 5; i++)
         {
             SpawnEnemy(chaserEnemy);
+
             yield return new WaitForSeconds(1f);
         }
+
         allSpawned = true;
-        Debug.Log("Wave 1 - All enemies spawned");
     }
 
+
+    // WAVE 2
     IEnumerator SpawnWave2()
     {
         for (int i = 0; i < 5; i++)
         {
             SpawnEnemy(chaserEnemy);
+
             yield return new WaitForSeconds(0.7f);
         }
+
         for (int i = 0; i < 3; i++)
         {
             SpawnEnemy(shooterEnemy);
+
             yield return new WaitForSeconds(1.5f);
         }
+
         allSpawned = true;
-        Debug.Log("Wave 2 - All enemies spawned");
     }
 
+    // WAVE 3
     IEnumerator SpawnWave3()
     {
         for (int i = 0; i < 4; i++)
         {
             SpawnEnemy(chargerEnemy);
+
             yield return new WaitForSeconds(2f);
         }
+
         for (int i = 0; i < 5; i++)
         {
             SpawnEnemy(shooterEnemy);
+
             yield return new WaitForSeconds(1f);
         }
+
         allSpawned = true;
-        Debug.Log("Wave 3 - All enemies spawned");
     }
 
+    // SPAWN BOSS
     IEnumerator SpawnBoss()
     {
-        Instantiate(bossEnemy, spawnPoints[1].position, Quaternion.identity);
+        Instantiate(
+            bossEnemy,
+            spawnPoints[1].position,
+            Quaternion.identity,
+            enemyContainer
+        );
+
         GameManager.Instance.RegisterEnemy();
+
         yield return new WaitForSeconds(1f);
 
         allSpawned = true;
-        Debug.Log("Wave Boss - All enemies spawned");
+    }
+
+
+    // WIN
+    IEnumerator GameWin()
+    {
+        GameManager.Instance.ScoreSetting();
+         
+        waveTxt.gameObject.SetActive(true);
+        waveTxt.text = "SCORE : "+ GameManager.Instance.score;;
+
+         yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("YOU WIN ALL WAVES!");
     }
 }

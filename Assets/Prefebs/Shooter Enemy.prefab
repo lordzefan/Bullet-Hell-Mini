@@ -129,9 +129,11 @@ MonoBehaviour:
   maxHealth: 3
   collionDamage: 1
   moveSpeed: 3
-  projectileKind: EnemyProjectile
-  fireRate: {fileID: 0}
-  bulletsPerBurst: 3
+  projectileType: EnemyProjectile
+  fireRate: {fileID: 11400000, guid: 5bc8d8a466e6928488f27946c1afb771, type: 2}
+  projectilePerMove: 3
+  amount: 3
+  angle: 60
   positionRangeX: {x: -9, y: 9}
   positionRangeY: {x: 1.2, y: 4}
   overlapCheckRadius: 1

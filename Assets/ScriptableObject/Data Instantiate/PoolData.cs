@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pool Data")]
 public class PoolData: ScriptableObject
 {
-    public string poolTag = "PlayerProjectile";
+    public string poolTag;
 
     public GameObject prefab;
 

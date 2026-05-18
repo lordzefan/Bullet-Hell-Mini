@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BaseEnemy : BaseHealth
 {
-    public int collionDamage = 1;
-    public float moveSpeed = 3f;
-    public string projectileKind = "EnemyProjectile";
-    private ParticleSystem damageParticle;
+    [SerializeField]protected int collionDamage = 1;
+    [SerializeField]protected float moveSpeed = 3f;
+    [SerializeField]protected string projectileType;
+    ParticleSystem damageParticle;
     protected Transform player;
 
 
@@ -22,6 +22,7 @@ public class BaseEnemy : BaseHealth
     {
         base.Start();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        LookAtPlayer();
     }
     
 

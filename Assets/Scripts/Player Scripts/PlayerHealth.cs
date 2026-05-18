@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : BaseHealth
 {
-    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI gameOver;
     public Slider healthBar;
 
     protected override void Awake()
@@ -20,6 +20,7 @@ public class PlayerHealth : BaseHealth
         base.Start();
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
+
         
     }
 
@@ -39,18 +40,14 @@ public class PlayerHealth : BaseHealth
 
      IEnumerator DeathRoutine()
     {
-        Debug.Log("GAME OVER");
-
-        yield return new WaitForSeconds(1f);
+        gameOver.gameObject.SetActive(true);
+        gameOver.text = "GAME OVER";
+        yield return new WaitForSeconds(2f);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // public void UpdateHealthUI()
-    // {
-        
-    // }
-    
+
 
    
 }

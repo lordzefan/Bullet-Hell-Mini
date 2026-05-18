@@ -28,6 +28,8 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
+
+    //INTANTIATE PROJECTILE
     private void InitializePool(PoolData poolData)
     {
         poolData.pool = new List<GameObject>();
@@ -43,6 +45,8 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
+
+    //MAKE A POOL TAG LIST
     public GameObject GetObject(string poolTag)
     {
         if (!poolDictionary.ContainsKey(poolTag))

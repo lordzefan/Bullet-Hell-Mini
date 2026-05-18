@@ -21,6 +21,7 @@ public class PlayerShooter : MonoBehaviour
         InputShoot();
     }
 
+    //CLICK TO SHOOT
     private void InputShoot()
     {
         if (Input.GetMouseButton(0)

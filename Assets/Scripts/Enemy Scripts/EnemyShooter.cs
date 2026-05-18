@@ -6,14 +6,16 @@ public class EnemyShooter : BaseEnemy
 {
     [Header("Shoot Settings")]
     [SerializeField] ProjectileData fireRate;
-    public int bulletsPerBurst = 3;      // jumlah tembakan sebelum pindah
+    [SerializeField] int projectilePerMove = 3;      // jumlah tembakan sebelum pindah
+    [SerializeField] int amount = 3;
+    [SerializeField] float angle = 60f;
     
 
     [Header("Movement Settings")]
-    public Vector2 positionRangeX = new Vector2(-8f, 8f);
-    public Vector2 positionRangeY = new Vector2(-4f, 4f);
-    public float overlapCheckRadius = 1f;
-    public int maxRetryCount = 5;
+    [SerializeField] Vector2 positionRangeX = new Vector2(-8f, 8f);
+    [SerializeField] Vector2 positionRangeY = new Vector2(-4f, 4f);
+    [SerializeField] float overlapCheckRadius = 1f;
+    [SerializeField] int maxRetryCount = 5;
 
     private Vector2 targetPosition;
     private bool isMoving = false;
@@ -45,39 +47,40 @@ public class EnemyShooter : BaseEnemy
         }
     }
 
-    // Siklus utama: tembak dulu → selesai → pindah → selesai → tembak lagi
+    // FIRE
     IEnumerator ShootThenMoveRoutine()
     {
         while (true)
         {
-            // === FASE TEMBAK ===
+            // === FASE SHOOT===
             isShooting = true;
             yield return StartCoroutine(DoBurst());
             isShooting = false;
 
-            // === FASE PINDAH ===
+            // === FASE MOVE ===
             Vector2 newTarget = GetValidPosition();
             if (newTarget != Vector2.zero)
             {
                 targetPosition = newTarget;
                 isMoving = true;
 
-                // Tunggu sampai enemy benar-benar sampai di posisi tujuan
                 yield return new WaitUntil(() => !isMoving);
             }
         }
     }
 
-    // Tembak sebanyak bulletsPerBurst dengan jeda burstDelay
+    // FIRE dELAY
     IEnumerator DoBurst()
     {
-        for (int i = 0; i < bulletsPerBurst; i++)
+        for (int i = 0; i < projectilePerMove; i++)
         {
             Attack();
             yield return new WaitForSeconds(fireRate.fireRate);
         }
     }
 
+
+    // mOVE
     Vector2 GetValidPosition()
     {
         for (int i = 0; i < maxRetryCount; i++)
@@ -97,6 +100,7 @@ public class EnemyShooter : BaseEnemy
         return Vector2.zero;
     }
 
+    // CHECK OVERLAPPING
     bool IsPositionOccupied(Vector2 position)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(position, overlapCheckRadius);
@@ -112,7 +116,7 @@ public class EnemyShooter : BaseEnemy
 
     void Attack()
     {
-        SpreadShot(3, 60f);
+        SpreadShot(amount, angle);
     }
 
     void SpreadShot(int bulletCount, float spreadAngle)
@@ -122,7 +126,7 @@ public class EnemyShooter : BaseEnemy
 
         for (int i = 0; i < bulletCount; i++)
         {
-            GameObject bullet = ObjectPool.Instance.GetObject(projectileKind);
+            GameObject bullet = ObjectPool.Instance.GetObject(projectileType);
 
             if (bullet != null)
             {

@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyShootCharger : BaseEnemy
 {
     [Header("Movement Settings")]
-    public float lifetime = 5f;          // berapa lama enemy bergerak sebelum destroy
+    public float lifetime = 5f;          
 
     [Header("Shoot Settings")]
     [SerializeField]ProjectileData fireRate;
 
-    private Vector2 moveDirection;
-    private bool isActive = false;
+    Vector2 moveDirection;
+    bool isActive = false;
 
     protected override void Start()
     {
@@ -23,20 +23,18 @@ public class EnemyShootCharger : BaseEnemy
     {
         if (!isActive) return;
         LookAtPlayer();
-        // Bergerak lurus terus ke arah awal (tidak mengikuti player)
         transform.position += (Vector3)(moveDirection * moveSpeed * Time.deltaTime);
     }
 
+
+    //MOVE AND SHOOT
     IEnumerator ChargerRoutine()
     {
-        // Ambil arah ke player saat spawn — tidak diupdate lagi
         moveDirection = (player.position - transform.position).normalized;
         isActive = true;
 
-        // Tembak dan bergerak bersamaan
         StartCoroutine(ShootRoutine());
 
-        // Hancurkan enemy setelah lifetime habis
         yield return new WaitForSeconds(lifetime);
 
         isActive = false;
@@ -57,13 +55,12 @@ public class EnemyShootCharger : BaseEnemy
 
     void ShootAtPlayer()
     {
-        GameObject bullet = ObjectPool.Instance.GetObject(projectileKind);
+        GameObject bullet = ObjectPool.Instance.GetObject(projectileType);
 
         if (bullet == null) return;
 
         bullet.transform.position = transform.position;
 
-        // Arah tembak selalu update ke posisi player saat ini
         Vector2 dirToPlayer = (player.position - transform.position).normalized;
         float angle = Mathf.Atan2(dirToPlayer.y, dirToPlayer.x) * Mathf.Rad2Deg;
 
