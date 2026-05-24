@@ -36,6 +36,8 @@ Game berfokus pada:
 | Wave UI | Menampilkan wave yang sedang dimulai |
 | Game Over UI | Muncul saat player mati |
 | Win UI | Muncul saat seluruh wave selesai |
+| Score UI | Muncul saat seluruh wave selesai |
+| High Score | Menampilkan score tertinggi |
 
 ---
 
